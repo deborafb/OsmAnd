@@ -1185,7 +1185,7 @@
     <string name="speed_limit_exceed_message">حدد حد السرعة المسموح به لتلقي تنبيه صوتي إذا ما تجاوزته.</string>
     <string name="traffic_warning_border_control">مراقبة الحدود</string>
     <string name="traffic_warning_payment">كشك الرسوم</string>
-    <string name="traffic_warning_calming">تخفيف الازدحام</string>
+    <string name="traffic_warning_calming">مطب</string>
     <string name="traffic_warning_speed_camera">كاميرا مراقبة السرعة</string>
     <string name="traffic_warning">تنبيه مروري</string>
     <string name="speak_poi">نقاط الاهتمام المجاورة</string>
@@ -3822,4 +3822,10 @@
     <string name="shared_string_custom">تخصيص</string>
     <string name="gpx_direction_arrows">اتجاه الأسهم</string>
     <string name="track_coloring_solid">صلب</string>
+    <string name="plan_route_last_edited">التعديل الأخير</string>
+    <string name="plan_route_import_track">استيراد المسار</string>
+    <string name="plan_route_open_existing_track">فتح المسار الموجود</string>
+    <string name="plan_route_create_new_route">إنشاء مسار جديد</string>
+    <string name="plan_route_select_track_file_for_open">حدد ملف المسار للفتح.</string>
+    <string name="shared_string_done">تم</string>
 </resources>
