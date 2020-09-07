@@ -305,6 +305,16 @@ public class MeasurementEditingContext {
 		return before.points.size();
 	}
 
+	// TODO complete
+	public List<RouteSegmentResult> getAllRouteSegments() {
+		if (!Algorithms.isEmpty(roadSegmentData)) {
+			for (RoadSegmentData data : roadSegmentData.values()) {
+				return data.getSegments();
+			}
+		}
+		return null;
+	}
+
 	void splitSegments(int position) {
 		List<WptPt> points = new ArrayList<>();
 		points.addAll(before.points);

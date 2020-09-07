@@ -140,14 +140,14 @@ public class SelectFileBottomSheet extends MenuBottomSheetDialogFragment {
 		foldersRecyclerView.setLayoutManager(new LinearLayoutManager(context,
 				RecyclerView.HORIZONTAL, false));
 		final HorizontalSelectionAdapter folderAdapter = new HorizontalSelectionAdapter(app, nightMode);
-		folderAdapter.setItems(dirItems);
-		folderAdapter.setSelectedItem(selectedFolder);
+		folderAdapter.setSimpleTitledItems(dirItems);
+		folderAdapter.setSelectedItemByTitle(selectedFolder);
 		foldersRecyclerView.setAdapter(folderAdapter);
 		folderAdapter.setListener(new HorizontalSelectionAdapterListener() {
 			@Override
-			public void onItemSelected(String item) {
-				selectedFolder = item;
-				updateFileList(item, folderAdapter);
+			public void onItemSelected(HorizontalSelectionAdapter.HorizontalSelectionItem item) {
+				selectedFolder = item.getTitle();
+				updateFileList(selectedFolder, folderAdapter);
 			}
 		});
 		items.add(new BaseBottomSheetItem.Builder().setCustomView(mainView).create());

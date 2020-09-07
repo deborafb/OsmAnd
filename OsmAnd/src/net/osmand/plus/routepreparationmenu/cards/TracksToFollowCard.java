@@ -81,13 +81,13 @@ public class TracksToFollowCard extends BaseCard {
 
 	private void setupCategoriesRow() {
 		final HorizontalSelectionAdapter selectionAdapter = new HorizontalSelectionAdapter(app, nightMode);
-		selectionAdapter.setItems(new ArrayList<>(gpxInfoCategories.keySet()));
-		selectionAdapter.setSelectedItem(selectedCategory);
+		selectionAdapter.setSimpleTitledItems(new ArrayList<>(gpxInfoCategories.keySet()));
+		selectionAdapter.setSelectedItemByTitle(selectedCategory);
 		selectionAdapter.setListener(new HorizontalSelectionAdapter.HorizontalSelectionAdapterListener() {
 			@Override
-			public void onItemSelected(String item) {
-				selectedCategory = item;
-				List<GPXInfo> items = gpxInfoCategories.get(item);
+			public void onItemSelected(HorizontalSelectionAdapter.HorizontalSelectionItem item) {
+				selectedCategory = item.getTitle();
+				List<GPXInfo> items = gpxInfoCategories.get(selectedCategory);
 				tracksAdapter.setGpxInfoList(items != null ? items : new ArrayList<GPXInfo>());
 				tracksAdapter.notifyDataSetChanged();
 

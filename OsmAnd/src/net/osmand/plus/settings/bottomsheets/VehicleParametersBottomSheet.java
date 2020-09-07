@@ -120,7 +120,7 @@ public class VehicleParametersBottomSheet extends BasePreferenceBottomSheet {
 					currentValue = 0.0f;
 				}
 				selectedItem = preference.getEntryFromValue(String.valueOf(currentValue));
-				adapter.setSelectedItem(selectedItem);
+				adapter.setSelectedItemByTitle(selectedItem);
 				int itemPosition = adapter.getItemPosition(selectedItem);
 				if (itemPosition >= 0) {
 					recyclerView.smoothScrollToPosition(itemPosition);
@@ -128,11 +128,11 @@ public class VehicleParametersBottomSheet extends BasePreferenceBottomSheet {
 			}
 		});
 
-		adapter.setItems(Arrays.asList(preference.getEntries()));
+		adapter.setSimpleTitledItems(Arrays.asList(preference.getEntries()));
 		adapter.setListener(new HorizontalSelectionAdapter.HorizontalSelectionAdapterListener() {
 			@Override
-			public void onItemSelected(String item) {
-				selectedItem = item;
+			public void onItemSelected(HorizontalSelectionAdapter.HorizontalSelectionItem item) {
+				selectedItem = item.getTitle();
 				currentValue = preference.getValueFromEntries(selectedItem);
 				String currentValueStr = currentValue == 0.0f
 						? "" : df.format(currentValue + 0.01f);
@@ -144,7 +144,7 @@ public class VehicleParametersBottomSheet extends BasePreferenceBottomSheet {
 			}
 		});
 		recyclerView.setAdapter(adapter);
-		adapter.setSelectedItem(selectedItem);
+		adapter.setSelectedItemByTitle(selectedItem);
 		return new BaseBottomSheetItem.Builder()
 				.setCustomView(mainView)
 				.create();
