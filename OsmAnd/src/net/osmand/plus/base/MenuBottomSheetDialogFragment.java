@@ -27,12 +27,16 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import net.osmand.AndroidUtils;
+import net.osmand.PlatformUtil;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.UiUtilities;
 import net.osmand.plus.UiUtilities.DialogButtonType;
 import net.osmand.plus.base.bottomsheetmenu.BaseBottomSheetItem;
 import net.osmand.plus.helpers.AndroidUiHelper;
+import net.osmand.plus.measurementtool.SelectedPointBottomSheetDialogFragment;
+
+import org.apache.commons.logging.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,35 +90,71 @@ public abstract class MenuBottomSheetDialogFragment extends BottomSheetDialogFra
 
 		inflateMenuItems();
 
-		dismissButton = mainView.findViewById(R.id.dismiss_button);
-		UiUtilities.setupDialogButton(nightMode, dismissButton, getDismissButtonType(), getDismissButtonTextId());
-		dismissButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onDismissButtonClickAction();
-				dismiss();
-			}
-		});
+
 		if (hideButtonsContainer()) {
 			mainView.findViewById(R.id.buttons_container).setVisibility(View.GONE);
 		} else {
 			int rightBottomButtonTextId = getRightBottomButtonTextId();
+			dismissButton = mainView.findViewById(R.id.dismiss_button);
+			UiUtilities.setupDialogButton(nightMode, dismissButton, getDismissButtonType(), getDismissButtonTextId());
+			dismissButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDismissButtonClickAction();
+					dismiss();
+				}
+			});
 			if (rightBottomButtonTextId != DEFAULT_VALUE) {
-				mainView.findViewById(R.id.buttons_divider).setVisibility(View.VISIBLE);
-				rightButton = mainView.findViewById(R.id.right_bottom_button);
-				UiUtilities.setupDialogButton(nightMode, rightButton, getRightBottomButtonType(), rightBottomButtonTextId);
-				rightButton.setVisibility(View.VISIBLE);
-				rightButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						onRightBottomButtonClick();
-					}
-				});
+				int screenWidth = AndroidUtils.getScreenWidth(getActivity());
+				int textWidthPortrait = AndroidUtils.getTextWidth(getResources().getDimensionPixelSize(R.dimen.default_desc_text_size), getString(rightBottomButtonTextId));
+				int textWidthLandscape = AndroidUtils.getTextWidth(getResources().getDimensionPixelSize(R.dimen.landscape_bottom_sheet_dialog_fragment_width), getString(rightBottomButtonTextId));
+				int calculateTextScreenWidth = (screenWidth -  AndroidUtils.dpToPx(getContext(), 96)) / 2;
+				int textWidth = AndroidUiHelper.isOrientationPortrait(getActivity())? textWidthPortrait : textWidthLandscape;
+				chooseButtonsPosition(mainView, rightBottomButtonTextId, calculateTextScreenWidth, textWidth);
+
 			}
 		}
 		updateBottomButtons();
 		setupHeightAndBackground(mainView);
 		return mainView;
+	}
+
+	private void chooseButtonsPosition(View mainView, int rightBottomButtonTextId, int calculateTextScreenWidth, int textWidth) {
+		if (textWidth <= calculateTextScreenWidth ) {
+			mainView.findViewById(R.id.buttons_divider).setVisibility(View.VISIBLE);
+			rightButton = mainView.findViewById(R.id.right_bottom_button);
+			UiUtilities.setupDialogButton(nightMode, rightButton, getRightBottomButtonType(), rightBottomButtonTextId);
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onRightBottomButtonClick();
+				}
+			});
+		} else {
+			View view = UiUtilities.getInflater(getContext(), nightMode).inflate(R.layout.bottom_buttons_vertical, null);
+			dismissButton = view.findViewById(R.id.dismiss_button);
+			UiUtilities.setupDialogButton(nightMode, dismissButton, getDismissButtonType(), getDismissButtonTextId());
+			dismissButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onDismissButtonClickAction();
+					dismiss();
+				}
+			});
+			rightButton = view.findViewById(R.id.right_bottom_button);
+			UiUtilities.setupDialogButton(nightMode, rightButton, getRightBottomButtonType(), rightBottomButtonTextId);
+			rightButton.setVisibility(View.VISIBLE);
+			rightButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onRightBottomButtonClick();
+				}
+			});
+			mainView.findViewById(R.id.buttons_container).setVisibility(View.GONE);
+			LinearLayout linearLayout = (LinearLayout)mainView;
+			linearLayout.addView(view);
+			}
 	}
 
 	@Override
