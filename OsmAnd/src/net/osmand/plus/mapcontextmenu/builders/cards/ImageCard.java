@@ -2,7 +2,6 @@ package net.osmand.plus.mapcontextmenu.builders.cards;
 
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.os.AsyncTask;
@@ -16,24 +15,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.osmand.*;
 import net.osmand.data.Amenity;
-import net.osmand.data.FavouritePoint;
 import net.osmand.data.LatLon;
-import net.osmand.data.RotatedTileBox;
-import net.osmand.osm.PoiType;
 import net.osmand.plus.OsmandApplication;
 import net.osmand.plus.R;
 import net.osmand.plus.Version;
 import net.osmand.plus.activities.MapActivity;
-import net.osmand.plus.activities.SettingsBaseActivity;
 import net.osmand.plus.mapcontextmenu.MenuBuilder;
 import net.osmand.plus.mapillary.MapillaryContributeCard;
 import net.osmand.plus.mapillary.MapillaryImageCard;
-import net.osmand.plus.osmedit.OsmBugsLayer;
-import net.osmand.plus.views.layers.ContextMenuLayer;
 import net.osmand.plus.wikimedia.WikiImageHelper;
 import net.osmand.util.Algorithms;
 
@@ -46,8 +37,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static net.osmand.data.FavouritePoint.DEFAULT_BACKGROUND_TYPE;
 
 public abstract class ImageCard extends AbstractCard {
 
@@ -201,7 +190,7 @@ public abstract class ImageCard extends AbstractCard {
 	private static ImageCard createCardOpr(MapActivity mapActivity, JSONObject imageObject) {
 		ImageCard imageCard = null;
 		if (imageObject.has("cid")) {
-			imageCard = new IPFSImageCard(mapActivity, imageObject);
+			imageCard = new OpenPlaceReviewsImageCard(mapActivity, imageObject);
 		}
 		return imageCard;
 	}
